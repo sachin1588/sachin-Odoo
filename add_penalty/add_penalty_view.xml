@@ -1,0 +1,59 @@
+<?xml version="1.0" ?>
+<openerp>
+    <data>
+        
+        <record id="view_invoice_penalty_form" model="ir.ui.view">
+            <field name="name">penalty.form</field>
+            <field name="model">add.penalty</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+            <form string="Penalty" >
+                <header>
+                    <button name="test_amount" string="Penalty"                  class="oe_highlight"  type="object"/>                  
+                </header>
+				<group>
+                    <field name="partner_id" required="True"/>
+					<field name="invoice_id" required="True"/>
+                </group>
+            </form>
+            </field>
+        </record>
+        
+        <record id="view_invoice_penalty_tree" model="ir.ui.view">
+            <field name="name">penalty.tree</field>
+            <field name="model">add.penalty</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <form string="Penalty" >
+					<field name="invoice_id"/>
+					<field name="partner_id"/> 					
+                </form>
+            </field>
+        </record>
+		
+		<record model="ir.actions.act_window" id="action_penalty_tree">
+			<field name="name">Add penalty</field>
+			<field name="res_model">add.penalty</field>
+			<field name="view_type">form</field>
+		    <field name="view_id" ref="view_invoice_penalty_tree"/>
+		    <field name="view_mode">tree,form</field>
+		</record>
+		
+   
+		
+		
+		<record id="ir_cron_mail_gateway_action" model="ir.cron">
+            <field name="name">Auto Penalty</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="model">add.penalty</field>
+            <field name="function">test_amount</field>
+           <field eval="'()'" name="args"/>
+        </record>   
+		
+		<menuitem name="Add Penalty" id="menu_penalty" parent="account.menu_finance" action="action_penalty_tree" sequence="2"/>
+		
+	</data>
+</openerp>
